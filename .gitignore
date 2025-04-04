@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#misc project files
+.vs/openGL/
+/simple_window/
