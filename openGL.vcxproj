@@ -170,6 +170,10 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="simple_window.cpp" />
+    <ClCompile Include="SinglePointShader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SinglePointShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -39,15 +39,20 @@ public:
 
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
+
+		glGenVertexArrays(1, &vertexArrayObject);
+		glBindVertexArray(vertexArrayObject);
 	}
 
 	~SinglePointShader() {
 		glDeleteProgram(shader);
+		glDeleteVertexArrays(1, &vertexArrayObject);
 	}
 private:
 	const GLchar* vertexShaderCode[1];
 	const GLchar* fragmentShaderCode[1];
 	GLuint shader;
+	GLuint vertexArrayObject;
 
 };
 
