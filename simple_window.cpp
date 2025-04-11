@@ -5,7 +5,7 @@
 #include <glad/glad.h> 
 #include <iostream>
 #include "GLFW/glfw3.h"
-
+#include "SinglePointShader.h"
 
 void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 {
@@ -23,6 +23,7 @@ private:
     };
 private:
     std::unique_ptr<GLFWwindow, DestroyglfwWin> managedOpenGLWindow;
+    SinglePointShader shaderProgram;
 
 
 public:
@@ -41,12 +42,16 @@ public:
         
     }
 
+    ~WindowManager() {
+
+    }
+
     GLFWwindow* GetManagedWindowPointer() const {
         return managedOpenGLWindow.get();
     }
 
     void Render(const double colorValueToProcess) const {
-        GLfloat colors[] = { std::cos(colorValueToProcess), std::sin(colorValueToProcess), colorValueToProcess, 1.0f};
+        GLfloat colors[] = { std::cos(colorValueToProcess), std::sin(colorValueToProcess), 0., 1.0f};
         glClearBufferfv(GL_COLOR, 0, colors) ;
         glfwSwapBuffers(managedOpenGLWindow.get());
     }
