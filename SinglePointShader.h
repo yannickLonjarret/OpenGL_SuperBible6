@@ -44,6 +44,8 @@ public:
 		glBindVertexArray(vertexArrayObject);
 	}
 
+	inline GLuint GetProgram() const { return shader; }
+
 	~SinglePointShader() {
 		glDeleteProgram(shader);
 		glDeleteVertexArrays(1, &vertexArrayObject);

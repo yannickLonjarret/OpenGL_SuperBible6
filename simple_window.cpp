@@ -53,6 +53,9 @@ public:
     void Render(const double colorValueToProcess) const {
         GLfloat colors[] = { std::cos(colorValueToProcess), std::sin(colorValueToProcess), 0., 1.0f};
         glClearBufferfv(GL_COLOR, 0, colors) ;
+
+        glUseProgram(shaderProgram.GetProgram());
+        glDrawArrays(GL_POINTS, 0, 1);
         glfwSwapBuffers(managedOpenGLWindow.get());
     }
 
