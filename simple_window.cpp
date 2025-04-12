@@ -25,7 +25,6 @@ private:
     std::unique_ptr<GLFWwindow, DestroyglfwWin> managedOpenGLWindow;
     SinglePointShader shaderProgram;
 
-
 public:
 
     WindowManager(){
@@ -39,6 +38,17 @@ public:
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             throw(std::exception("Failed to initialize GLAD"));
+        
+
+        shaderProgram = SinglePointShader("#version 430 core \n"
+			"void main(void) \n"
+			"{ \n"
+			"	gl_Position = vec4(0.0,0.0,0.5,1.0);\n"
+            "}\n\0", "#version 430 core \n"
+			"out vec4 color; \n"
+			"void main(void) { \n"
+			"	color = vec4(0.0,0.8,1.0,1.0);\n"
+            "}\n\0");
         
     }
 
