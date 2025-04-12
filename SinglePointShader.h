@@ -1,47 +1,106 @@
 #pragma once
-#pragma once
 #include <glad/glad.h> 
 #include "GLFW/glfw3.h"
 
-class SinglePointShader
-{
-public:
-	SinglePointShader(): shader(NULL), vertexArrayObject(NULL) {}
+namespace Shaders {
 
-	SinglePointShader(const GLchar* vertex, const GLchar* fragment) {
-		const GLchar* vertexShaderCode = vertex;
+	class SinglePointShader
+	{
+	public:
+		SinglePointShader() = default;
 
-		const GLchar* fragmentShaderCode = fragment;
-		
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexShaderCode, NULL);
-		glCompileShader(vertexShader);
+		SinglePointShader(const GLchar* vertex, const GLchar* fragment) {
 
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragmentShaderCode, NULL);
-		glCompileShader(fragmentShader);
+			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(vertexShader, 1, &vertex, NULL);
+			glCompileShader(vertexShader);
 
-		this->shader = glCreateProgram();
-		glAttachShader(shader, vertexShader);
-		glAttachShader(shader, fragmentShader);
-		glLinkProgram(this->shader);
+			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(fragmentShader, 1, &fragment, NULL);
+			glCompileShader(fragmentShader);
 
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
+			this->shader = glCreateProgram();
+			glAttachShader(this->shader, vertexShader);
+			glAttachShader(this->shader, fragmentShader);
+			glLinkProgram(this->shader);
 
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-	}
+			glDeleteShader(vertexShader);
+			glDeleteShader(fragmentShader);
 
-	inline GLuint GetProgram() const { return shader; }
+			glGenVertexArrays(1, &vertexArrayObject);
+			glBindVertexArray(vertexArrayObject);
+		}
 
-	~SinglePointShader() {
-		glDeleteProgram(shader);
-		glDeleteVertexArrays(1, &vertexArrayObject);
-	}
-private:
-	GLuint shader;
-	GLuint vertexArrayObject;
+		void SetPointSize(float newSize) const { glPointSize(newSize); }
 
-};
+		void DrawPoint() const {
+			glBindVertexArray(vertexArrayObject);
+			glUseProgram(this->shader);
+			glDrawArrays(GL_POINTS, 0, 1);
 
+		}
+
+		void ClearData() {
+			glDeleteProgram(shader);
+			glDeleteVertexArrays(1, &vertexArrayObject);
+		}
+
+		~SinglePointShader() {
+
+		}
+
+	private:
+		GLuint shader;
+		GLuint vertexArrayObject;
+	};
+
+	class TriangleShader
+	{
+	public:
+		TriangleShader() = default;
+
+		TriangleShader(const GLchar* vertex, const GLchar* fragment) {
+
+			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(vertexShader, 1, &vertex, NULL);
+			glCompileShader(vertexShader);
+
+			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(fragmentShader, 1, &fragment, NULL);
+			glCompileShader(fragmentShader);
+
+			this->shader = glCreateProgram();
+			glAttachShader(this->shader, vertexShader);
+			glAttachShader(this->shader, fragmentShader);
+			glLinkProgram(this->shader);
+
+			glDeleteShader(vertexShader);
+			glDeleteShader(fragmentShader);
+
+			glGenVertexArrays(1, &vertexArrayObject);
+			glBindVertexArray(vertexArrayObject);
+		}
+
+		void SetPointSize(float newSize) const { glPointSize(newSize); }
+
+		void DrawPoint() const {
+			glBindVertexArray(vertexArrayObject);
+			glUseProgram(this->shader);
+			glDrawArrays(GL_POINTS, 0, 1);
+
+		}
+
+		void ClearData() {
+			glDeleteProgram(shader);
+			glDeleteVertexArrays(1, &vertexArrayObject);
+		}
+
+		~TriangleShader() {
+
+		}
+
+	private:
+		GLuint shader;
+		GLuint vertexArrayObject;
+	};
+}

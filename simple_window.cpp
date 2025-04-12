@@ -2,94 +2,13 @@
 //
 
 #pragma once
-#include <glad/glad.h> 
-#include <iostream>
+#include "WindowManager.h"
 #include "GLFW/glfw3.h"
-#include "SinglePointShader.h"
-
-void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
-
-class WindowManager {
-private:
-    struct DestroyglfwWin {
-
-        void operator()(GLFWwindow* ptr) {
-            glfwDestroyWindow(ptr);
-        }
-
-    };
-private:
-    std::unique_ptr<GLFWwindow, DestroyglfwWin> managedOpenGLWindow;
-    SinglePointShader shaderProgram;
-
-public:
-
-    WindowManager(){
-        managedOpenGLWindow = std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(500, 500, "My first window in OpenGL", NULL, NULL));
-
-        if (!managedOpenGLWindow.get())
-            throw(std::exception("Failed to open window"));
-        
-        glfwMakeContextCurrent(managedOpenGLWindow.get());
-        glfwSetFramebufferSizeCallback(managedOpenGLWindow.get(), FramebufferSizeCallback);
-
-        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-            throw(std::exception("Failed to initialize GLAD"));
-        
-
-        shaderProgram = SinglePointShader("#version 430 core \n"
-			"void main(void) \n"
-			"{ \n"
-			"	gl_Position = vec4(0.0,0.0,0.5,1.0);\n"
-            "}\n\0", "#version 430 core \n"
-			"out vec4 color; \n"
-			"void main(void) { \n"
-			"	color = vec4(0.0,0.8,1.0,1.0);\n"
-            "}\n\0");
-        
-    }
-
-    ~WindowManager() {
-
-    }
-
-    GLFWwindow* GetManagedWindowPointer() const {
-        return managedOpenGLWindow.get();
-    }
-
-    void Render(const double colorValueToProcess) const {
-        GLfloat colors[] = { std::cos(colorValueToProcess), std::sin(colorValueToProcess), 0., 1.0f};
-        glClearBufferfv(GL_COLOR, 0, colors) ;
-
-        glUseProgram(shaderProgram.GetProgram());
-        glDrawArrays(GL_POINTS, 0, 1);
-        glfwSwapBuffers(managedOpenGLWindow.get());
-    }
-
-    void ListenProgramEnd()
-    {
-        if (glfwGetKey(managedOpenGLWindow.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            glfwSetWindowShouldClose(managedOpenGLWindow.get(), true);
-    }
-
-    void ProcessEvents() {
-        glfwPollEvents();
-    }
-
-    bool EndWindow() {
-        return !glfwWindowShouldClose(managedOpenGLWindow.get());
-    }
-
-    
-};
-
+#include <cmath>
 
 void InitializeOpenGLToolkit() {
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwInit();
 }
@@ -101,7 +20,7 @@ int main()
 {
     InitializeOpenGLToolkit();
 
-    WindowManager window = WindowManager();
+    WindowManagement::WindowManager window = WindowManagement::WindowManager();
 
     double smallSteps = 0.;
     while (window.EndWindow()){
