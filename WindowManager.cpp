@@ -8,13 +8,15 @@ namespace WindowManagement {
         glClearBufferfv(GL_COLOR, 0, colors);
 
         //shaderProgram.SetPointSize(40* std::cos(colorValueToProcess));
-        shaderProgram.DrawPoint();
+        triangleShaderProgram.DrawTriangle();
+        pointShaderProgram.DrawPoint();
+        
         glfwSwapBuffers(managedOpenGLWindow.get());
     }
 
     void WindowManager::InitializePoint()
     {
-        shaderProgram = SinglePointShader("#version 460 core \n"
+        pointShaderProgram = Shaders::SinglePointShader("#version 460 core \n"
             "void main(void) \n"
             "{ \n"
             "	gl_Position = vec4(0.5,0.5,0.5,1.0);\n"
@@ -24,6 +26,28 @@ namespace WindowManagement {
             "void main(void) { \n"
             "	color = vec4(0.5,0.,0.,1.);\n"
             "}\n\0");
-        shaderProgram.SetPointSize(40.);
+        pointShaderProgram.SetPointSize(40.);
+    }
+    void WindowManager::InitializeTriangle()
+    {
+        triangleShaderProgram = Shaders::TriangleShader(
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    const vec4 vertices[] = vec4[](vec4( 0.25, -0.25, 0.5, 1.0),  \n"
+            "                                   vec4(-0.25, -0.25, 0.5, 1.0),  \n"
+            "                                   vec4( 0.25,  0.25, 0.5, 1.0)); \n"
+            "                                                                  \n"
+            "    gl_Position = vertices[gl_VertexID];                          \n"
+            "}                                                                 \n\0",
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "out vec4 color;                                                   \n"
+            "                                                                  \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    color = vec4(0.0, 0.8, 1.0, 1.0);                             \n"
+            "}                                                                 \n\0");
     }
 }

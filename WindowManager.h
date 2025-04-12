@@ -18,7 +18,8 @@ namespace WindowManagement {
         };
     private:
         std::unique_ptr<GLFWwindow, DestroyglfwWin> managedOpenGLWindow;
-        SinglePointShader shaderProgram;
+        Shaders::SinglePointShader pointShaderProgram;
+        Shaders::TriangleShader triangleShaderProgram;
 
     public:
 
@@ -35,6 +36,7 @@ namespace WindowManagement {
                 throw(std::exception("Failed to initialize GLAD"));
 
             InitializePoint();
+            InitializeTriangle();
         }
 
         ~WindowManager() {
@@ -51,6 +53,8 @@ namespace WindowManagement {
         void Render(const double colorValueToProcess) const;
 
         void InitializePoint();
+
+        void InitializeTriangle();
 
         void ListenProgramEnd()
         {
