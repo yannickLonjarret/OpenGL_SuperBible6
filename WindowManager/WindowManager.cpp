@@ -1,4 +1,7 @@
+#include "pch.h"
 #include "WindowManager.h"
+#include <memory>
+#include <cmath>
 
 namespace WindowManagement {
 

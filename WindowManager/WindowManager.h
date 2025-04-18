@@ -1,8 +1,12 @@
 #pragma once
+#include "pch.h"
+
 #include <memory>
 #include <cmath>
+#include "glad/glad.h"
 
 #include "SinglePointShader.h"
+
 
 namespace WindowManagement {
 

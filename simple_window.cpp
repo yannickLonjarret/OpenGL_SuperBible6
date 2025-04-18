@@ -3,24 +3,14 @@
 
 #pragma once
 #include "WindowManager.h"
-#include "GLFW/glfw3.h"
 #include <cmath>
 #include <chrono>
 #include <thread>
+#include "OpenGLToolkitManager.hpp"
 
-void InitializeOpenGLToolkit() {
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwInit();
-}
-
-void EndOpenGLToolkit() {
-    glfwTerminate();
-}
 int main()
 {
-    InitializeOpenGLToolkit();
+    OpenGLToolkitManager::InitializeOpenGLToolkit();
 
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
 
@@ -36,7 +26,7 @@ int main()
             smallSteps = 0.0;
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     } 
-    EndOpenGLToolkit();
+    OpenGLToolkitManager::EndOpenGLToolkit();
     return 0;
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
