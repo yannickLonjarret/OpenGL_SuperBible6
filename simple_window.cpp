@@ -5,6 +5,8 @@
 #include "WindowManager.h"
 #include "GLFW/glfw3.h"
 #include <cmath>
+#include <chrono>
+#include <thread>
 
 void InitializeOpenGLToolkit() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -29,10 +31,10 @@ int main()
         window.Render(smallSteps);
         window.ProcessEvents();
 
-        smallSteps += 1.e-4;
+        smallSteps += 5.e-4;
         if (smallSteps > _HUGE_ENUF)
             smallSteps = 0.0;
- 
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     } 
     EndOpenGLToolkit();
     return 0;
