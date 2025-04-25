@@ -1,16 +1,23 @@
 #pragma once
-#include "pch.h"
+#ifdef WINDOWMANAGER_EXPORTS
+#define WM_API __declspec(dllexport)
+#else
+#define WM_API __declspec(dllimport)
+#endif // WINDOWMANAGER_EXPORTS
 
+#include "pch.h"
 #include <memory>
 #include <cmath>
 #include "glad/glad.h"
 
 #include "SinglePointShader.h"
+#include "OpenGLToolkitManager.hpp"
 
 
 namespace WindowManagement {
 
-    class WindowManager
+
+    class WM_API WindowManager
     {
     private:
         struct DestroyglfwWin {
@@ -28,6 +35,7 @@ namespace WindowManagement {
     public:
 
         WindowManager() {
+            OpenGLToolkitManager::InitializeOpenGLToolkit();
             managedOpenGLWindow = std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(500, 500, "My first window in OpenGL", NULL, NULL));
 
             if (!managedOpenGLWindow.get())

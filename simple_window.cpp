@@ -6,12 +6,10 @@
 #include <cmath>
 #include <chrono>
 #include <thread>
-#include "OpenGLToolkitManager.hpp"
+
 
 int main()
 {
-    OpenGLToolkitManager::InitializeOpenGLToolkit();
-
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
 
     double smallSteps = 0.;

@@ -31,6 +31,7 @@ namespace WindowManagement {
             "}\n\0");
         pointShaderProgram.SetPointSize(40.);
     }
+
     void WindowManager::InitializeTriangle()
     {
         triangleShaderProgram = Shaders::TriangleShader(
