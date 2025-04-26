@@ -9,12 +9,12 @@
 int main()
 {
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
-
+    window.InitializeOffsetTriangle();
     double smallSteps = 0.;
     while (window.EndWindow()) {
 
         window.ListenProgramEnd();
-        window.Render(smallSteps);
+        window.RenderMovingTriangle(smallSteps);
         window.ProcessEvents();
 
         smallSteps += 5.e-4;
