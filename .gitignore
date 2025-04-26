@@ -30,3 +30,20 @@
 *.exe
 *.out
 *.app
+
+#misc project files
+.vs/openGL/
+/simple_window/
+/slow_render_speed.diagsession
+*.tlog
+*.Build.CppClean.log
+*.dll.recipe
+*.iobj
+*.ipdb
+*.log
+*.vcxproj.FileListAbsolute.txt
+*.pdb
+*.exp
+*.filters
+*.user
+*.recipe
