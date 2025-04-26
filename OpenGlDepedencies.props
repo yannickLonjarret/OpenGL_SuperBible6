@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_PropertySheetDisplayName>OpenGLDepedencies</_PropertySheetDisplayName>
-    <IncludePath>C:\OpenGL\glad\gl4.6\include;C:\OpenGL\glfw-3.4.bin.WIN64\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\OpenGL\glad\gl4.6\include;C:\OpenGL\glfw-3.4.bin.WIN64\include;C:\Users\yanni\OneDrive\Bureau\ProjetsPerso\Logiciels\openGL\WindowManager;$(IncludePath)</IncludePath>
     <LibraryPath>C:\OpenGL\glfw-3.4.bin.WIN64\lib-vc2022;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>

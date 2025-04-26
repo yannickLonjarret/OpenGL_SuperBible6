@@ -43,3 +43,7 @@
 *.log
 *.vcxproj.FileListAbsolute.txt
 *.pdb
+*.exp
+*.filters
+*.user
+*.recipe
