@@ -11,7 +11,8 @@
 int main()
 {
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
-
+    window.InitializePoint();
+    window.InitializeTriangle();
     double smallSteps = 0.;
     while (window.EndWindow()){
 
@@ -24,7 +25,7 @@ int main()
             smallSteps = 0.0;
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     } 
-    OpenGLToolkitManager::EndOpenGLToolkit();
+
     return 0;
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

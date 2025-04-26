@@ -46,9 +46,6 @@ namespace WindowManagement {
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
                 throw(std::exception("Failed to initialize GLAD"));
-
-            InitializePoint();
-            InitializeTriangle();
         }
 
         ~WindowManager() {
