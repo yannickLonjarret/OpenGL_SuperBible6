@@ -54,4 +54,28 @@ namespace WindowManagement {
             "    color = vec4(0.0, 0.8, 1.0, 1.0);                             \n"
             "}                                                                 \n\0");
     }
+
+    void WindowManager::InitializeOffsetTriangle()
+    {
+        triangleShaderProgram = Shaders::TriangleShader(
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "layout (location = 0) in vec4 offset                              \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    const vec4 vertices[] = vec4[](vec4( 0.25, -0.25, 0.5, 1.0),  \n"
+            "                                   vec4(-0.25, -0.25, 0.5, 1.0),  \n"
+            "                                   vec4( 0.25,  0.25, 0.5, 1.0)); \n"
+            "                                                                  \n"
+            "    gl_Position = vertices[gl_VertexID] + offset;                 \n"
+            "}                                                                 \n\0",
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "out vec4 color;                                                   \n"
+            "                                                                  \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    color = vec4(0.0, 0.8, 1.0, 1.0);                             \n"
+            "}                                                                 \n\0");
+    }
 }
