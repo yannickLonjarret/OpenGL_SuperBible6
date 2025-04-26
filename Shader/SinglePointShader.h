@@ -4,8 +4,22 @@
 #include "GLFW/glfw3.h"
 
 namespace Shaders {
+	class Shader {
+	public:
+		virtual void Draw() const = 0;
+		virtual void Draw(GLfloat positionOffset[]) const = 0;
+		virtual void Draw(GLfloat positionOffset[], GLfloat color[]) const = 0;
 
-	class SinglePointShader
+		void ClearData() {
+			glDeleteProgram(shader);
+			glDeleteVertexArrays(1, &vertexArrayObject);
+		}
+	protected:
+		GLuint shader;
+		GLuint vertexArrayObject;
+	};
+
+	class SinglePointShader : public Shader
 	{
 	public:
 		SinglePointShader() = default;
@@ -34,28 +48,31 @@ namespace Shaders {
 
 		void SetPointSize(float newSize) const { glPointSize(newSize); }
 
-		void DrawPoint() const {
-			glBindVertexArray(vertexArrayObject);
+		void Draw() const override {
 			glUseProgram(this->shader);
 			glDrawArrays(GL_POINTS, 0, 1);
-
 		}
 
-		void ClearData() {
-			glDeleteProgram(shader);
-			glDeleteVertexArrays(1, &vertexArrayObject);
+		void Draw(GLfloat positionOffset[]) const override {
+			glUseProgram(this->shader);
+			glVertexAttrib4fv(0, positionOffset);
+			glDrawArrays(GL_POINTS, 0, 1);
+		}
+
+		void Draw(GLfloat positionOffset[], GLfloat color[]) const override {
+			glUseProgram(this->shader);
+			glVertexAttrib4fv(0, positionOffset);
+			glVertexAttrib4fv(1, color);
+			glDrawArrays(GL_POINTS, 0, 1);
+
 		}
 
 		~SinglePointShader() {
 
 		}
-
-	private:
-		GLuint shader;
-		GLuint vertexArrayObject;
 	};
 
-	class TriangleShader
+	class TriangleShader : public Shader
 	{
 	public:
 		TriangleShader() = default;
@@ -84,31 +101,29 @@ namespace Shaders {
 
 		void SetPointSize(float newSize) const { glPointSize(newSize); }
 
-		void DrawTriangle() const {
+		void Draw() const override {
 			glUseProgram(this->shader);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+		}
+
+		void Draw(GLfloat positionOffset[]) const override {
+			glUseProgram(this->shader);
+			glVertexAttrib4fv(0, positionOffset);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		}
 
-		void DrawTriangle(const double positionOffset) const {
+		void Draw(GLfloat positionOffset[], GLfloat color[]) const override {
 			glUseProgram(this->shader);
-			GLfloat position[] = { std::cos(positionOffset), std::sin(positionOffset), 0., 0. };
-			glVertexAttrib4fv(0, position);
+			glVertexAttrib4fv(0, positionOffset);
+			glVertexAttrib4fv(1, color);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		}
-
-		void ClearData() {
-			glDeleteProgram(shader);
-			glDeleteVertexArrays(1, &vertexArrayObject);
 		}
 
 		~TriangleShader() {
 
 		}
 
-	private:
-		GLuint shader;
-		GLuint vertexArrayObject;
 	};
 }
