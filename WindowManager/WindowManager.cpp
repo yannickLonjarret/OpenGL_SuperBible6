@@ -17,6 +17,18 @@ namespace WindowManagement {
         glfwSwapBuffers(managedOpenGLWindow.get());
     }
 
+    void WindowManager::RenderMovingTriangle(const double colorValueToProcess) const
+    {
+        GLfloat colors[] = { std::cos(colorValueToProcess), std::sin(colorValueToProcess), 0., 1.0f };
+        
+        glClearBufferfv(GL_COLOR, 0, colors);
+
+        //shaderProgram.SetPointSize(40* std::cos(colorValueToProcess));
+        triangleShaderProgram.DrawTriangle(colorValueToProcess);
+
+        glfwSwapBuffers(managedOpenGLWindow.get());
+    }
+
     void WindowManager::InitializePoint()
     {
         pointShaderProgram = Shaders::SinglePointShader("#version 460 core \n"
@@ -60,18 +72,22 @@ namespace WindowManagement {
         triangleShaderProgram = Shaders::TriangleShader(
             "#version 460 core                                                 \n"
             "                                                                  \n"
-            "layout (location = 0) in vec4 offset                              \n"
+            "layout (location = 0) in vec4 offset;                             \n"
+            //"layout (location = 1) in vec4 color;                              \n"
+            //"out vec4 vs_color                                                 \n"
             "void main(void)                                                   \n"
             "{                                                                 \n"
-            "    const vec4 vertices[] = vec4[](vec4( 0.25, -0.25, 0.5, 1.0),  \n"
+            "    const vec4 vertices[3] = vec4[3](vec4( 0.25, -0.25, 0.5, 1.0),\n"
             "                                   vec4(-0.25, -0.25, 0.5, 1.0),  \n"
             "                                   vec4( 0.25,  0.25, 0.5, 1.0)); \n"
             "                                                                  \n"
             "    gl_Position = vertices[gl_VertexID] + offset;                 \n"
             "}                                                                 \n\0",
+
             "#version 460 core                                                 \n"
             "                                                                  \n"
             "out vec4 color;                                                   \n"
+            //"in vec4 vs_color;                                                 \n"
             "                                                                  \n"
             "void main(void)                                                   \n"
             "{                                                                 \n"

@@ -60,6 +60,8 @@ namespace WindowManagement {
         inline GLFWwindow* GetManagedWindowPointer() const { return managedOpenGLWindow.get(); }
 
         void Render(const double colorValueToProcess) const;
+        
+        void RenderMovingTriangle(const double colorValueToProcess) const;
 
         void InitializePoint();
 

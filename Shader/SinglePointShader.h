@@ -90,6 +90,14 @@ namespace Shaders {
 
 		}
 
+		void DrawTriangle(const double positionOffset) const {
+			glUseProgram(this->shader);
+			GLfloat position[] = { std::cos(positionOffset), std::sin(positionOffset), 0., 0. };
+			glVertexAttrib4fv(0, position);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		}
+
 		void ClearData() {
 			glDeleteProgram(shader);
 			glDeleteVertexArrays(1, &vertexArrayObject);
