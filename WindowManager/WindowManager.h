@@ -52,7 +52,7 @@ namespace WindowManagement {
         }
 
         ~WindowManager() {
-
+            OpenGLToolkitManager::EndOpenGLToolkit();
         }
 
         static void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
