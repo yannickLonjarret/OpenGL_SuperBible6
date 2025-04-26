@@ -10,6 +10,7 @@ int main()
 {
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
     window.InitializeOffsetTriangle();
+    window.InitializeOffsetColorTriangle();
     double smallSteps = 0.;
     while (window.EndWindow()) {
 

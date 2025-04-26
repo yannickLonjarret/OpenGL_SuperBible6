@@ -12,6 +12,7 @@
 
 #include "SinglePointShader.h"
 #include "OpenGLToolkitManager.hpp"
+#include <vector>
 
 
 namespace WindowManagement {
@@ -29,12 +30,13 @@ namespace WindowManagement {
         };
     private:
         std::unique_ptr<GLFWwindow, DestroyglfwWin> managedOpenGLWindow;
-        Shaders::SinglePointShader pointShaderProgram;
-        Shaders::TriangleShader triangleShaderProgram;
+        std::vector<std::unique_ptr<Shaders::Shader>> shaders;
 
     public:
 
         WindowManager() {
+            shaders = std::vector< std::unique_ptr<Shaders::Shader>>();
+
             OpenGLToolkitManager::InitializeOpenGLToolkit();
             managedOpenGLWindow = std::unique_ptr<GLFWwindow, DestroyglfwWin>(glfwCreateWindow(500, 500, "My first window in OpenGL", NULL, NULL));
 
@@ -68,6 +70,8 @@ namespace WindowManagement {
         void InitializeTriangle();
 
         void InitializeOffsetTriangle();
+
+        void InitializeOffsetColorTriangle();
 
         void ListenProgramEnd()
         {
