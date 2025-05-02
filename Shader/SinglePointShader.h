@@ -99,6 +99,34 @@ namespace Shaders {
 			glBindVertexArray(vertexArrayObject);
 		}
 
+		TriangleShader(const GLchar* vertex, const GLchar* tesselationControl, const GLchar* fragment) {
+
+			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			glShaderSource(vertexShader, 1, &vertex, NULL);
+			glCompileShader(vertexShader);
+
+			GLuint tesselationControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
+			glShaderSource(tesselationControlShader, 1, &fragment, NULL);
+			glCompileShader(tesselationControlShader);
+
+			GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+			glShaderSource(fragmentShader, 1, &fragment, NULL);
+			glCompileShader(fragmentShader);
+
+			this->shader = glCreateProgram();
+			glAttachShader(this->shader, vertexShader);
+			glAttachShader(this->shader, tesselationControlShader);
+			glAttachShader(this->shader, fragmentShader);
+			glLinkProgram(this->shader);
+
+			glDeleteShader(vertexShader);
+			glDeleteShader(tesselationControlShader);
+			glDeleteShader(fragmentShader);
+
+			glGenVertexArrays(1, &vertexArrayObject);
+			glBindVertexArray(vertexArrayObject);
+		}
+
 		void SetPointSize(float newSize) const { glPointSize(newSize); }
 
 		void Draw() const override {
