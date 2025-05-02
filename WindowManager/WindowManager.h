@@ -73,6 +73,8 @@ namespace WindowManagement {
 
         void InitializeOffsetColorTriangle();
 
+        void InitializeInterfaceBlockTriangle();
+
         void ListenProgramEnd()
         {
             if (glfwGetKey(managedOpenGLWindow.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS)

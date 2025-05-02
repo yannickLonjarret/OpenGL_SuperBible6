@@ -12,7 +12,8 @@ int main()
 {
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
     window.InitializePoint();
-    //window.InitializeTriangle();
+    window.InitializeTriangle();
+
     double smallSteps = 0.;
     while (window.EndWindow()){
 
