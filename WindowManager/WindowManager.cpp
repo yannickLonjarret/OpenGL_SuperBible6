@@ -20,6 +20,7 @@ namespace WindowManagement {
     void WindowManager::RenderMovingTriangle(const double colorValueToProcess) const
     {
         GLfloat colors[] = { 0.,0.,0.,0.};
+        GLfloat magenta[] = { 1.f, 0.f, 1.f, 1. };
         glClearBufferfv(GL_COLOR, 0, colors);
 
         GLfloat triangleColor[] = { std::cos(colorValueToProcess), std::sin(colorValueToProcess), 0., 1.0f };
@@ -28,7 +29,8 @@ namespace WindowManagement {
         //shaderProgram.SetPointSize(40* std::cos(colorValueToProcess));
         shaders.at(0)->Draw(position1, triangleColor);
         shaders.at(1)->Draw(position2, triangleColor);
-
+        if (shaders.size() > 2)
+            shaders.at(2)->Draw(colors, magenta);
         glfwSwapBuffers(managedOpenGLWindow.get());
     }
 
