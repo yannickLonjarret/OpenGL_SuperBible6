@@ -204,6 +204,7 @@ namespace Shaders {
 		void TesselateDraw() const override {
 			glUseProgram(this->shader);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glPointSize(5.0);
 			glDrawArrays(GL_PATCHES, 0, 3);
 		}
 

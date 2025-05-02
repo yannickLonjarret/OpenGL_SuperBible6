@@ -12,6 +12,7 @@ int main()
     window.InitializeOffsetTriangle();
     window.InitializeOffsetColorTriangle();
     window.InitializeTesselationTriangle();
+    window.InitializeTesselationGeometryTriangle();
     double smallSteps = 0.;
     while (window.EndWindow()) {
 
