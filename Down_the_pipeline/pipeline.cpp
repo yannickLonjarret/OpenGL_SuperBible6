@@ -11,7 +11,7 @@ int main()
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
     window.InitializeOffsetTriangle();
     window.InitializeOffsetColorTriangle();
-    window.InitializeInterfaceBlockTriangle();
+    window.InitializeTesselationTriangle();
     double smallSteps = 0.;
     while (window.EndWindow()) {
 

@@ -75,7 +75,7 @@ namespace WindowManagement {
 
         void InitializeInterfaceBlockTriangle();
 
-        void InitializeTesselationControlTriangle();
+        void InitializeTesselationTriangle();
 
         void ListenProgramEnd()
         {
