@@ -20,7 +20,7 @@ public:
 	ShaderVariable(const IOType ioData, const std::string& type, const std::string& name) : 
 		io(ioData), type(type), name(name){}
 
-	std::string GenerateGLSL() const{
+	std::string GenerateGLSL() const override{
 		return std::format("{} {} {}", io == input ? "in" : "out", type, name);
 	}
 private:
@@ -38,7 +38,7 @@ class ShaderLayout : public ShaderData {
 		variable = ShaderVariable(ioData, type, name);
 	}
 
-	std::string GenerateGLSL() const {
+	std::string GenerateGLSL() const override {
 		return std::format("layout ({} = {}) {}\n", layoutSpecifier, specifierData, variable.GenerateGLSL());
 	}
 private:
