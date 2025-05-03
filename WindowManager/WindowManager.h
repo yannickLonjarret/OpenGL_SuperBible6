@@ -10,7 +10,7 @@
 #include <cmath>
 #include "glad/glad.h"
 
-#include "SinglePointShader.h"
+#include "Shader.h"
 #include "OpenGLToolkitManager.hpp"
 #include <vector>
 
