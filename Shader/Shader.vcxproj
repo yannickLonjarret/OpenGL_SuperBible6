@@ -145,8 +145,11 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ShaderData.h" />
     <ClInclude Include="ShaderHelper.h" />
-    <ClInclude Include="SinglePointShader.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderRenderer.h" />
+    <ClInclude Include="ShaderSourceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -156,7 +159,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SinglePointShader.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderData.cpp" />
+    <ClCompile Include="ShaderRenderer.cpp" />
+    <ClCompile Include="ShaderSourceGenerator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
