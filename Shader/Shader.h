@@ -3,6 +3,7 @@
 #include <glad/glad.h> 
 #include "GLFW/glfw3.h"
 #include "ShaderHelper.h"
+#include "ShaderRenderer.h"
 #include <vector>
 
 namespace Shaders {
@@ -12,7 +13,7 @@ namespace Shaders {
 		virtual void Draw(GLfloat positionOffset[]) const = 0;
 		virtual void Draw(GLfloat positionOffset[], GLfloat color[]) const = 0;
 		virtual void TesselateDraw() const = 0;
-		virtual void ClearData() const  final {
+		void ClearData() const{
 			glDeleteProgram(shader);
 			glDeleteVertexArrays(1, &vertexArrayObject);
 		}
