@@ -54,6 +54,10 @@ private:
 	GLSLVariable variableData;
 };
 
+class ShaderLayoutArgument : public ShaderData {
+
+};
+
 class ShaderLayout : public ShaderData {
 	ShaderLayout(const int data, const ShaderVariable& var, const std::string& specifier = "location") :
 		layoutSpecifier(specifier), specifierData(data), variable(var){}
