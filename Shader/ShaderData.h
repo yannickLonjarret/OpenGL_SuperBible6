@@ -26,7 +26,6 @@ public:
 	}
 
 private:
-	IOType io;
 	std::string type;
 	std::string name;
 };
