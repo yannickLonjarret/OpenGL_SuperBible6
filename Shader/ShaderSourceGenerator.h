@@ -6,7 +6,7 @@
 class ShaderSourceGenerator
 {
 public:
-	ShaderSourceGenerator(const std::vector<std::unique_ptr<ShaderData>>& data) : shaderInfo(data) {
+	ShaderSourceGenerator(const std::vector<std::shared_ptr<ShaderData>>& data) : shaderInfo(data) {
 		Generate();
 	}
 
@@ -24,14 +24,14 @@ private:
 
 	void FormatShaderSourceBody() {
 		for (const auto& data : shaderInfo)
-			shaderSource.push_back(data->GenerateGLSL());
+			shaderSource.emplace_back(data->GenerateGLSL());
 	}
 
 	void EndShader() {
 		shaderSource.push_back("}\n\0");
 	}
 private:
-	std::vector<std::unique_ptr<ShaderData>> shaderInfo;
+	std::vector<std::shared_ptr<ShaderData>> shaderInfo;
 	std::vector<std::string> shaderSource;
 };
 
