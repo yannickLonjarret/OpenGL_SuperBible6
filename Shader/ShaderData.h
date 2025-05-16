@@ -21,13 +21,20 @@ public:
 	GLSLVariable(const std::string& type, const std::string& name) :
 		type(type), name(name) {}
 
-	std::string GenerateGLSL() const override {
+	virtual std::string GenerateGLSL() const override {
 		return std::format("{} {}", type, name);
 	}
 
-private:
+protected:
 	std::string type;
 	std::string name;
+};
+
+class GLSLArray: GLSLVariable {
+public:
+	std::string GenerateGLSL() const override {
+		return std::format("{} {}[]", type, name);
+	}
 };
 
 class ShaderVariable : public ShaderData {
