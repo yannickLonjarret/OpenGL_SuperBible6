@@ -9,10 +9,11 @@
 int main()
 {
     WindowManagement::WindowManager window = WindowManagement::WindowManager();
-    window.InitializeOffsetTriangle();
+    window.InitializeMovingFragmentTriangle();
     window.InitializeOffsetColorTriangle();
     window.InitializeTesselationTriangle();
     window.InitializeTesselationGeometryTriangle();
+    window.InitializeFragmentTriangle();
     double smallSteps = 0.;
     while (window.EndWindow()) {
 
@@ -20,10 +21,10 @@ int main()
         window.RenderMovingTriangle(smallSteps);
         window.ProcessEvents();
 
-        smallSteps += 5.e-4;
+        smallSteps += 5.e-3;
         if (smallSteps > _HUGE_ENUF)
             smallSteps = 0.0;
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     return 0;
 }

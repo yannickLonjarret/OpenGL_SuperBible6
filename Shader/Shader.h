@@ -160,13 +160,14 @@ namespace Shaders {
 
 		void Draw() const override {
 			glUseProgram(this->shader);
-
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 		}
 
 		void Draw(GLfloat positionOffset[]) const override {
 			glUseProgram(this->shader);
 			glVertexAttrib4fv(0, positionOffset);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		}

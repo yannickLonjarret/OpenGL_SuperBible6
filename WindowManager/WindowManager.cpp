@@ -1,3 +1,5 @@
+#include "WindowManager.h"
+#include "WindowManager.h"
 #include "pch.h"
 #include "WindowManager.h"
 #include <memory>
@@ -30,8 +32,10 @@ namespace WindowManagement {
         shaders.at(0)->Draw(position1, triangleColor);
         shaders.at(1)->Draw(position2, triangleColor);
         if (shaders.size() > 2) {
+            shaders.at(4)->Draw();
             shaders.at(2)->TesselateDraw();
             shaders.at(3)->TesselateDraw();
+            
         }
         glfwSwapBuffers(managedOpenGLWindow.get());
     }
@@ -277,6 +281,63 @@ namespace WindowManagement {
             "void main(void)                                                   \n"
             "{                                                                 \n"
             "    color = vec4(0.0, 1.0, 0.0, 0.0);                             \n"
+            "}                                                                 \n\0");
+        shaders.push_back(std::move(triangleShaderProgram));
+    }
+    void WindowManagement::WindowManager::InitializeFragmentTriangle()
+    {
+        std::unique_ptr<Shaders::Shader> triangleShaderProgram = std::make_unique<Shaders::TriangleShader>(
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    const vec4 vertices[] = vec4[](vec4( 0.25, -0.25, 0.5, 1.0),  \n"
+            "                                   vec4(-0.25, -0.25, 0.5, 1.0),  \n"
+            "                                   vec4( 0.25,  0.25, 0.5, 1.0)); \n"
+            "                                                                  \n"
+            "    gl_Position = vertices[gl_VertexID];                          \n"
+            "}                                                                 \n\0",
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "out vec4 color;                                                 \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    color = vec4(sin(gl_FragCoord.x *0.25) *0.5+0.5,\n"
+            "                 cos(gl_FragCoord.y *0.25) *0.5+0.5,\n"
+            "                 sin(gl_FragCoord.x * 0.15) * cos(gl_FragCoord.y *0.15),\n"
+                              "1.0);\n"
+            "}                                                                 \n\0");
+        shaders.push_back(std::move(triangleShaderProgram));
+    }
+    void WindowManagement::WindowManager::InitializeMovingFragmentTriangle()
+    {
+        std::unique_ptr<Shaders::Shader> triangleShaderProgram = std::make_unique<Shaders::TriangleShader>(
+            "#version 460 core                                                          \n"
+            "                                                                           \n"
+            "layout (location = 0) in vec4 offset;                             \n"
+            "layout (location = 1) in vec4 color;                              \n"
+            "out vec4 vs_color; \n"
+            "void main(void)                                                            \n"
+            "{                                                                          \n"
+            "    const vec4 vertices[] = vec4[](vec4( 0.25, -0.25, 0.5, 1.0),           \n"
+            "                                   vec4(-0.25, -0.25, 0.5, 1.0),           \n"
+            "                                   vec4( 0.25,  0.25, 0.5, 1.0));          \n"
+            "    const vec4 colors[] = vec4[](vec4(1.0, 0.0, 0.0, 1.0),                 \n"
+            "                                 vec4(0.0, 1.0, 0.0, 1.0),                 \n"
+            "                                 vec4(0.0, 0.0, 1.0, 1.0));                \n"
+            "                                                                           \n"
+            "    gl_Position = vertices[gl_VertexID] + offset;                                   \n"
+            "    vs_color = colors[gl_VertexID] + color;                                        \n"
+            "}                                                                          \n\0",
+
+            "#version 460 core                                                 \n"
+            "                                                                  \n"
+            "in vec4 vs_color;                                                 \n"
+            "out vec4 color;                                                   \n"
+            "                                                                  \n"
+            "void main(void)                                                   \n"
+            "{                                                                 \n"
+            "    color = vs_color;                                             \n"
             "}                                                                 \n\0");
         shaders.push_back(std::move(triangleShaderProgram));
     }

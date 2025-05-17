@@ -79,6 +79,10 @@ namespace WindowManagement {
 
         void InitializeTesselationGeometryTriangle();
 
+        void InitializeFragmentTriangle();
+
+        void InitializeMovingFragmentTriangle();
+
         void ListenProgramEnd()
         {
             if (glfwGetKey(managedOpenGLWindow.get(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
