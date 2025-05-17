@@ -2,6 +2,7 @@
 #include <string>
 #include <format>
 #include <vector>
+#include <ranges>
 
 class ShaderData
 {
@@ -55,25 +56,32 @@ private:
 };
 
 class ShaderLayoutArgument : public ShaderData {
+public:
+	ShaderLayoutArgument(const std::string& qual = "location", const int data = -1) : qualifier(qual), value(data) {};
+
+	std::string GenerateGLSL() const override {
+		return value > 0 ? std::format("{} = {}", qualifier, value) : std::format("{}", qualifier);
+	}
+private:
+	std::string qualifier;
+	int value;
 
 };
 
 class ShaderLayout : public ShaderData {
-	ShaderLayout(const int data, const ShaderVariable& var, const std::string& specifier = "location") :
-		layoutSpecifier(specifier), specifierData(data), variable(var){}
-
-	ShaderLayout(const int position, const IOType ioData, const std::string& type, const std::string& name, const std::string& specifier = "location") :
-		layoutSpecifier(specifier), specifierData(position) {
-		variable = ShaderVariable(ioData, type, name);
-	}
+	ShaderLayout(const std::vector<ShaderLayoutArgument>& args, const ShaderVariable& var) :
+		args(args), variable(var) {}
 
 	std::string GenerateGLSL() const override {
-		return std::format("layout ({} = {}) {};\n", layoutSpecifier, specifierData, variable.GenerateGLSL());
+		std::string formattedArs;
+		for (const auto& arg : std::ranges::drop_view{ args,1 })
+			formattedArs.append(std::format(",{}", arg.GenerateGLSL()));
+
+		return std::format("layout ({}) {};\n", formattedArs, variable.GenerateGLSL());
 	}
 private:
 	ShaderVariable variable;
-	std::string layoutSpecifier;
-	int specifierData;
+	std::vector<ShaderLayoutArgument> args;
 };
 
 
