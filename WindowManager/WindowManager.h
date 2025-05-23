@@ -10,7 +10,7 @@
 #include <cmath>
 #include "glad/glad.h"
 
-#include "SinglePointShader.h"
+#include "Shader.h"
 #include "OpenGLToolkitManager.hpp"
 #include <vector>
 
@@ -72,6 +72,16 @@ namespace WindowManagement {
         void InitializeOffsetTriangle();
 
         void InitializeOffsetColorTriangle();
+
+        void InitializeInterfaceBlockTriangle();
+
+        void InitializeTesselationTriangle();
+
+        void InitializeTesselationGeometryTriangle();
+
+        void InitializeFragmentTriangle();
+
+        void InitializeMovingFragmentTriangle();
 
         void ListenProgramEnd()
         {
