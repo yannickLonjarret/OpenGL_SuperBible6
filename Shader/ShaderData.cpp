@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "ShaderData.h"
 
-
-
-
 std::string ShaderInterface::GenerateGLSL() const
 {
     std::string formattedShaderSource;

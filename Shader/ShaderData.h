@@ -10,6 +10,13 @@ public:
 	virtual std::string GenerateGLSL() const = 0;
 };
 
+class ShaderOperation : ShaderData {
+public:
+	std::string GenerateGLSL() const override final { return operationResult; }
+protected: 
+	std::string operationResult;
+};
+
 enum IOType
 {
 	input = 0,
@@ -84,7 +91,6 @@ private:
 	std::vector<ShaderLayoutArgument> args;
 };
 
-
 class ShaderInterface : public ShaderData {
 public:
 	ShaderInterface() {};
@@ -102,6 +108,7 @@ private:
 	std::string interfaceName;
 	std::string interfaceType;
 };
+
 
 
 
