@@ -33,12 +33,13 @@ public:
 		return std::format("{} {}", type, name);
 	}
 
+	std::string GetName() const { return name; }
 protected:
 	std::string type;
 	std::string name;
 };
 
-class GLSLArray: GLSLVariable {
+class GLSLArray: public GLSLVariable {
 public:
 	std::string GenerateGLSL() const override {
 		return std::format("{} {}[]", type, name);
@@ -99,6 +100,7 @@ public:
 		io(ioData), fields(fields), interfaceName(name) {}
 
 	std::string GenerateGLSL() const override;
+	std::string GetName() const { return interfaceName; }
 private:
 	std::string StartInterface() const;
 	std::string EndInterface() const;
