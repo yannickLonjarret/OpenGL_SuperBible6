@@ -111,6 +111,47 @@ private:
 	std::string interfaceType;
 };
 
+class ShaderAssign : public ShaderOperation {
+public:
+	ShaderAssign(GLSLVariable& assign, GLSLVariable& read) {
+		operationResult = std::format("{} = {}", assign.GetName(), read.GetName());
+	};
+
+	ShaderAssign(GLSLVariable& assign, ShaderAssign& read) {
+		operationResult = std::format("{} = {}", assign.GetName(), read.operationResult);
+	};
+
+	ShaderAssign(GLSLArray& assign, std::string& arrayAccessor, GLSLVariable& read) {
+		operationResult = std::format("{}[{}] = {}", assign.GetName(), arrayAccessor, read.GetName());
+	};
+
+	ShaderAssign(GLSLVariable& assign, GLSLVariable& read, std::string& arrayAccessor) {
+		operationResult = std::format("{} = {}[{}]", assign.GetName(), read.GetName(), arrayAccessor);
+	};
+
+	ShaderAssign(ShaderInterface& assign, GLSLVariable& access, GLSLVariable& read) {
+		operationResult = std::format("{}.{} = {}", assign.GetName(), access.GetName(), read);
+	};
+
+	ShaderAssign(GLSLVariable& assign, GLSLVariable& read, GLSLVariable& access) {
+		operationResult = std::format("{} = {}.{}", assign.GetName(), access.GetName(), read);
+	};
+};
+
+class ShaderAdd : public ShaderOperation {
+public:
+	ShaderAdd(GLSLVariable& assign, GLSLVariable& read) {
+		operationResult = std::format("{} + {}", assign.GetName(), read.GetName());
+	};
+
+	ShaderAdd(GLSLVariable& assign, GLSLVariable& read, std::string& arrayAccessor) {
+		operationResult = std::format("{} + {}[{}]", assign.GetName(), read.GetName(), arrayAccessor);
+	};
+
+	ShaderAssign(ShaderInterface& assign, GLSLVariable& access, GLSLVariable& read) {
+		operationResult = std::format("{}.{} + {}", assign.GetName(), access.GetName(), read);
+	};
+};
 
 
 
