@@ -117,6 +117,10 @@ public:
 		operationResult = std::format("{} = {}", assign.GetName(), read.GetName());
 	};
 
+	ShaderAssign(GLSLVariable& assign, std::string &read) {
+		operationResult = std::format("{} = {}", assign.GetName(), read);
+	};
+
 	ShaderAssign(GLSLVariable& assign, ShaderAssign& read) {
 		operationResult = std::format("{} = {}", assign.GetName(), read.operationResult);
 	};
@@ -154,6 +158,10 @@ public:
 
 	ShaderAdd(ShaderInterface& assign, GLSLVariable& access, GLSLVariable& read) {
 		operationResult = std::format("{}.{} + {}", assign.GetName(), access.GetName(), read.GetName());
+	};
+
+	ShaderAdd(GLSLVariable& assign, std::string& read) {
+		operationResult = std::format("{} + {}", assign.GetName(), read);
 	};
 private:
 	ShaderAdd() {
