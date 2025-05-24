@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "ShaderData.h"
+#include <format>
 
 class ShaderSourceGenerator
 {
@@ -24,7 +25,7 @@ private:
 
 	void FormatShaderSourceBody() {
 		for (const auto& data : shaderInfo)
-			shaderSource.emplace_back(data->GenerateGLSL());
+			shaderSource.emplace_back(std::format("{};\n", data->GenerateGLSL()));
 	}
 
 	void EndShader() {
