@@ -10,7 +10,7 @@ public:
 	virtual std::string GenerateGLSL() const = 0;
 };
 
-class ShaderOperation : ShaderData {
+class ShaderOperation : public ShaderData {
 public:
 	std::string GenerateGLSL() const override final { return operationResult; }
 protected: 
@@ -23,14 +23,21 @@ enum IOType
 	output = 1
 };
 
-class GLSLVariable : ShaderData {
+class StartShaderBody : public ShaderData {
+public:
+	std::string GenerateGLSL() const override final { return "void main(void){\n"; }
+private:
+
+};
+
+class GLSLVariable : public ShaderData {
 public:
 	GLSLVariable() {};
-	GLSLVariable(const std::string& type, const std::string& name) :
+	GLSLVariable(const std::string name, const std::string type = "") :
 		type(type), name(name) {}
 
 	virtual std::string GenerateGLSL() const override {
-		return std::format("{} {}", type, name);
+		return std::format("{} {};", type, name);
 	}
 
 	std::string GetName() const { return name; }
@@ -41,6 +48,10 @@ protected:
 
 class GLSLArray: public GLSLVariable {
 public:
+	GLSLArray(const std::string name, const std::string type = "") :
+		GLSLVariable(name, type) {
+	}
+
 	std::string GenerateGLSL() const override {
 		return std::format("{} {}[]", type, name);
 	}
@@ -54,7 +65,7 @@ public:
 		io(ioData){
 		variableData = GLSLVariable(type, name);
 	}
-
+	GLSLVariable GetData() const { return variableData; }
 	std::string GenerateGLSL() const override{
 		return std::format("{} {}", io == input ? "in" : "out", variableData.GenerateGLSL());
 	}
@@ -113,32 +124,36 @@ private:
 
 class ShaderAssign : public ShaderOperation {
 public:
-	ShaderAssign(GLSLVariable& assign, GLSLVariable& read) {
-		operationResult = std::format("{} = {}", assign.GetName(), read.GetName());
+	ShaderAssign(GLSLVariable assign, GLSLVariable read) {
+		operationResult = std::format("{} = {};", assign.GetName(), read.GetName());
 	};
 
-	ShaderAssign(GLSLVariable& assign, std::string &read) {
-		operationResult = std::format("{} = {}", assign.GetName(), read);
+	ShaderAssign(GLSLVariable assign, std::string read) {
+		operationResult = std::format("{} = {};", assign.GetName(), read);
 	};
 
-	ShaderAssign(GLSLVariable& assign, ShaderAssign& read) {
-		operationResult = std::format("{} = {}", assign.GetName(), read.operationResult);
+	ShaderAssign(GLSLArray assign, std::string read) {
+		operationResult = std::format("{} = {};", assign.GenerateGLSL(), read);
 	};
 
-	ShaderAssign(GLSLArray& assign, std::string& arrayAccessor, GLSLVariable& read) {
-		operationResult = std::format("{}[{}] = {}", assign.GetName(), arrayAccessor, read.GetName());
+	ShaderAssign(GLSLVariable assign, ShaderAssign read) {
+		operationResult = std::format("{} = {};", assign.GetName(), read.operationResult);
 	};
 
-	ShaderAssign(GLSLVariable& assign, GLSLVariable& read, std::string& arrayAccessor) {
-		operationResult = std::format("{} = {}[{}]", assign.GetName(), read.GetName(), arrayAccessor);
+	ShaderAssign(GLSLArray assign, std::string arrayAccessor, GLSLVariable read) {
+		operationResult = std::format("{}[{}] = {};", assign.GetName(), arrayAccessor, read.GetName());
 	};
 
-	ShaderAssign(ShaderInterface& assign, GLSLVariable& access, GLSLVariable& read) {
-		operationResult = std::format("{}.{} = {}", assign.GetName(), access.GetName(), read.GetName());
+	ShaderAssign(GLSLVariable assign, GLSLVariable read, std::string arrayAccessor) {
+		operationResult = std::format("{} = {}[{}];", assign.GetName(), read.GetName(), arrayAccessor);
 	};
 
-	ShaderAssign(GLSLVariable& assign, GLSLVariable& read, GLSLVariable& access) {
-		operationResult = std::format("{} = {}.{}", assign.GetName(), access.GetName(), read.GetName());
+	ShaderAssign(ShaderInterface assign, GLSLVariable access, GLSLVariable read) {
+		operationResult = std::format("{}.{} = {};", assign.GetName(), access.GetName(), read.GetName());
+	};
+
+	ShaderAssign(GLSLVariable assign, GLSLVariable read, GLSLVariable access) {
+		operationResult = std::format("{} = {}.{};", assign.GetName(), access.GetName(), read.GetName());
 	};
 private:
 	ShaderAssign() {
@@ -148,19 +163,19 @@ private:
 
 class ShaderAdd : public ShaderOperation {
 public:
-	ShaderAdd(GLSLVariable& assign, GLSLVariable& read) {
+	ShaderAdd(GLSLVariable assign, GLSLVariable read) {
 		operationResult = std::format("{} + {}", assign.GetName(), read.GetName());
 	};
 
-	ShaderAdd(GLSLVariable& assign, GLSLVariable& read, std::string& arrayAccessor) {
+	ShaderAdd(GLSLVariable assign, GLSLVariable read, std::string arrayAccessor) {
 		operationResult = std::format("{} + {}[{}]", assign.GetName(), read.GetName(), arrayAccessor);
 	};
 
-	ShaderAdd(ShaderInterface& assign, GLSLVariable& access, GLSLVariable& read) {
+	ShaderAdd(ShaderInterface assign, GLSLVariable access, GLSLVariable read) {
 		operationResult = std::format("{}.{} + {}", assign.GetName(), access.GetName(), read.GetName());
 	};
 
-	ShaderAdd(GLSLVariable& assign, std::string& read) {
+	ShaderAdd(GLSLVariable assign, std::string read) {
 		operationResult = std::format("{} + {}", assign.GetName(), read);
 	};
 private:
