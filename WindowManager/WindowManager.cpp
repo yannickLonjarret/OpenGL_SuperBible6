@@ -4,6 +4,8 @@
 #include "WindowManager.h"
 #include <memory>
 #include <cmath>
+#include "ShaderData.h"
+#include "ShaderSourceGenerator.h"
 
 namespace WindowManagement {
 
@@ -42,17 +44,25 @@ namespace WindowManagement {
 
     void WindowManager::InitializePoint()
     {
+        std::vector<std::shared_ptr<ShaderData>> vertexShader, fragmentShader;
+
+        GLSLVariable var = GLSLVariable("gl_Position");
+        std::shared_ptr<ShaderAssign> assign = std::make_shared <ShaderAssign>(var, std::string("vec4(0.5,0.5,0.5,1.0)"));
+        vertexShader.emplace_back(std::make_shared<StartShaderBody>());
+        vertexShader.emplace_back(assign);
+        ShaderSourceGenerator vertexSource = ShaderSourceGenerator(vertexShader);
+
+        std::shared_ptr<ShaderVariable> colorOutput = std::make_shared<ShaderVariable>(output, "color", "vec4");
+        fragmentShader.emplace_back(colorOutput);
+        fragmentShader.emplace_back(std::make_shared<StartShaderBody>());
+        assign = std::make_shared<ShaderAssign>(colorOutput->GetData(), std::string("vec4(.5,0.,0.,1.)"));
+        fragmentShader.emplace_back(assign);
+
+        ShaderSourceGenerator fragmentSource = ShaderSourceGenerator(fragmentShader);
+
         std::unique_ptr<Shaders::Shader> pointShaderProgram = std::make_unique<Shaders::SinglePointShader>(
-            "#version 460 core \n"
-            "void main(void) \n"
-            "{ \n"
-            "	gl_Position = vec4(0.5,0.5,0.5,1.0);\n"
-            "}\n\0",
-            "#version 460 core \n"
-            "out vec4 color; \n"
-            "void main(void) { \n"
-            "	color = vec4(0.5,0.,0.,1.);\n"
-            "}\n\0");
+            vertexSource.GetGLSL(),
+            fragmentSource.GetGLSL());
 
         if (auto* singlePointShader = dynamic_cast<Shaders::SinglePointShader*>(pointShaderProgram.get())) {
             singlePointShader->SetPointSize(40.f);
@@ -62,25 +72,28 @@ namespace WindowManagement {
 
     void WindowManager::InitializeTriangle()
     {
+        std::vector<std::shared_ptr<ShaderData>> vertexShader, fragmentShader;
+
+        GLSLVariable var = GLSLVariable("gl_Position");
+        GLSLArray array = GLSLArray("vertices","const vec4");
+
+        std::shared_ptr<ShaderAssign> assign = std::make_shared <ShaderAssign>(array, std::string("vec4[](vec4(0.25, -0.25, 0.5, 1.0)\n, vec4(-0.25, -0.25, 0.5, 1.0)\n, vec4(0.25, 0.25, 0.5, 1.0))"));
+        vertexShader.emplace_back(std::make_shared<StartShaderBody>());
+        vertexShader.emplace_back(assign);
+        assign = std::make_shared <ShaderAssign>(var, array, "gl_VertexID");
+        vertexShader.emplace_back(assign);
+        ShaderSourceGenerator vertexSource = ShaderSourceGenerator(vertexShader);
+
+        std::shared_ptr<ShaderVariable> colorOutput = std::make_shared<ShaderVariable>(output, "color", "vec4");
+        fragmentShader.emplace_back(colorOutput);
+        fragmentShader.emplace_back(std::make_shared<StartShaderBody>());
+        assign = std::make_shared<ShaderAssign>(colorOutput->GetData(), std::string("vec4(.0,.8,1.,1.)"));
+        fragmentShader.emplace_back(assign);
+
+        ShaderSourceGenerator fragmentSource = ShaderSourceGenerator(fragmentShader);
         std::unique_ptr<Shaders::Shader> triangleShaderProgram = std::make_unique<Shaders::TriangleShader>(
-            "#version 460 core                                                 \n"
-            "                                                                  \n"
-            "void main(void)                                                   \n"
-            "{                                                                 \n"
-            "    const vec4 vertices[] = vec4[](vec4( 0.25, -0.25, 0.5, 1.0),  \n"
-            "                                   vec4(-0.25, -0.25, 0.5, 1.0),  \n"
-            "                                   vec4( 0.25,  0.25, 0.5, 1.0)); \n"
-            "                                                                  \n"
-            "    gl_Position = vertices[gl_VertexID];                          \n"
-            "}                                                                 \n\0",
-            "#version 460 core                                                 \n"
-            "                                                                  \n"
-            "out vec4 color;                                                   \n"
-            "                                                                  \n"
-            "void main(void)                                                   \n"
-            "{                                                                 \n"
-            "    color = vec4(0.0, 0.8, 1.0, 1.0);                             \n"
-            "}                                                                 \n\0");
+            vertexSource.GetGLSL(),
+            fragmentSource.GetGLSL());
         shaders.push_back(std::move(triangleShaderProgram));
     }
 
