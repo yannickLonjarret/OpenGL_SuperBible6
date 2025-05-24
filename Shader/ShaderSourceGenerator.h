@@ -11,6 +11,9 @@ public:
 		Generate();
 	}
 
+	const char* GetGLSL() const {
+		return shaderSource.c_str();
+	}
 
 private:
 	void Generate() {
@@ -20,19 +23,19 @@ private:
 	}
 
 	void StartShader() {
-		shaderSource.push_back("#version 460 core\n");
+		shaderSource.append("#version 460 core\n");
 	}
 
 	void FormatShaderSourceBody() {
 		for (const auto& data : shaderInfo)
-			shaderSource.emplace_back(std::format("{};\n", data->GenerateGLSL()));
+			shaderSource.append(std::format("{};\n", data->GenerateGLSL()));
 	}
 
 	void EndShader() {
-		shaderSource.push_back("}\n\0");
+		shaderSource.append("}\n\0");
 	}
 private:
 	std::vector<std::shared_ptr<ShaderData>> shaderInfo;
-	std::vector<std::string> shaderSource;
+	std::string shaderSource;
 };
 
