@@ -28,7 +28,7 @@ private:
 
 	void FormatShaderSourceBody() {
 		for (const auto& data : shaderInfo)
-			shaderSource.append(std::format("{};\n", data->GenerateGLSL()));
+			shaderSource.append(std::format("{}\n", data->GenerateGLSL()));
 	}
 
 	void EndShader() {
